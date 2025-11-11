@@ -1,2 +1,9 @@
-
+pandas
+mygene
+networkx
+scipy
+tqdm
+requests
+matplotlib
+seaborn
 
