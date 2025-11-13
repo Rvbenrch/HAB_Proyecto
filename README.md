@@ -60,4 +60,69 @@ Este repositorio implementa un flujo reproducible para análisis funcional (Enri
 └── requirements.txt             # dependencias
  ``` </pre>
 
- 
+ # Proyecto de Análisis Funcional y Propagación en Redes (HAB)
+
+Pipeline reproducible para analizar listas de genes mediante propagación en redes (Random Walk with Restart, RWR) sobre STRING y posterior enriquecimiento funcional con Enrichr (GO BP y KEGG). Incluye opciones bonus (DIAMOnD y GUILD/NetScore) y genera tablas y figuras listas para informe.
+
+---
+
+## Objetivos del proyecto
+
+* Desarrollar un script en Python que:
+  1. mapee símbolos HUGO/HGNC a IDs de STRING, 2) descargue la red PPI filtrada, 3) ejecute RWR desde genes semilla, 4) clasifique genes por proximidad funcional, 5) realice enriquecimiento funcional (GO BP, KEGG) y 6) produzca salidas estandarizadas (CSV, PNG, SVG, logs y metadatos).
+* Proveer una CLI clara, reproducible y multiplataforma.
+* (Opcional) Integrar DIAMOnD y/o GUILD (NetScore) para priorización adicional y enriquecimiento combinado.
+* Cumplir los criterios de la rúbrica: funcionalidad, justificación técnica, automatización, documentación, calidad de código y visualización.
+
+---
+
+## Qué hace el pipeline
+
+1. Lee una lista de genes (símbolos HUGO/HGNC).
+2. Mapea símbolos → IDs de STRING (API).
+3. Descarga la red de interacciones PPI desde STRING con filtros de score y vecinos.
+4. Propaga la señal desde las semillas con RWR y rankea por puntuación.
+5. Enriquece funcionalmente (GO: Biological Process y KEGG) con Enrichr.
+6. Dibuja:
+   * Barplot de GO BP (PNG + SVG) con etiquetas legibles.
+   * Red coloreada por puntuación de propagación.
+7. Opcional (bonus): ejecuta DIAMOnD y/o GUILD y permite enriquecimiento combinado.
+8. Documenta la ejecución: logs, metadatos y README de resultados.
+
+---
+
+## Metodología (resumen)
+
+* RWR: proceso de difusión con reinicio hacia las semillas; asigna scores globales de relevancia.
+* STRING: red PPI curada que integra evidencia experimental, coexpresión y texto.
+* Enrichr: enriquecimiento en GO BP y KEGG sobre el top de genes por RWR.
+* DIAMOnD/GUILD (opcional): priorización basada en conectividad y propagación iterativa.
+
+---
+
+## Estructura del repositorio
+
+data/ – Entradas (genes_input.txt)  
+scripts/ – Código (funcnet_pipeline.py, hab_cli.py)  
+results/ – Salidas generadas  
+docs/ – Documentación adicional  
+requirements.txt – Dependencias  
+
+---
+
+## Requisitos
+
+requests==2.31.0  
+pandas==2.2.2  
+numpy==1.26.4  
+networkx==3.2.1  
+matplotlib==3.8.4  
+scipy==1.11.4
+
+Nota: se requiere conexión a Internet para STRING y Enrichr.
+
+Instalación rápida:
+python -m venv venv
+source venv/bin/activate        # Linux/macOS
+# .\venv\Scripts\activate   # Windows PowerShell
+pip install -r requirements.txt
