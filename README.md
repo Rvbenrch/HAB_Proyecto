@@ -1,5 +1,5 @@
 <details>
-<summary>Enunciado del Projecto<summary>
+<summary>Enunciado del Projecto<\summary>
 
 # Proyecto de Análisis Funcional y Propagación en Redes
 
