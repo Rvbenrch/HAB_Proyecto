@@ -127,3 +127,77 @@ python -m venv venv
 source venv/bin/activate        # Linux/macOS
 # .\venv\Scripts\activate   # Windows PowerShell
 pip install -r requirements.txt
+
+## Ejecución rápida (cross‑platform)
+
+Windows (PowerShell / CMD):
+python scripts\funcnet_pipeline.py --genes-file data\genes_input.txt --outdir results --top-k 50 --with-diamond --with-guild --strict-symbols
+
+Linux / macOS:
+python3 scripts/funcnet_pipeline.py --genes-file data/genes_input.txt --outdir results --top-k 50 --with-diamond --with-guild --strict-symbols
+
+Si no quieres bonus: elimina --with-diamond --with-guild.
+
+---
+
+## Uso detallado (CLI)
+
+Script principal: scripts/funcnet_pipeline.py
+
+Parámetros clave:
+--genes-file PATH (por defecto data/genes_input.txt)  
+--outdir PATH (por defecto results)  
+--species INT (9606 humano)  
+--string-score INT (400/700/900)  
+--neighbors INT  
+--alpha FLOAT (0.5 por defecto)  
+--top-k INT  
+--no-enrich  
+--strict-symbols  
+
+Opciones de visualización:
+--plot-top INT  
+--plot-width FLOAT  
+--plot-font INT  
+
+Opciones bonus:
+--with-diamond  
+--with-guild  
+--combo-top INT  
+
+Ejemplos de uso:
+python scripts/funcnet_pipeline.py --genes-file data/genes_input.txt --outdir results  
+python scripts/funcnet_pipeline.py --string-score 900 --neighbors 100  
+python scripts/funcnet_pipeline.py --strict-symbols  
+python scripts/funcnet_pipeline.py --top-k 50 --with-diamond --with-guild --combo-top 50  
+python scripts/funcnet_pipeline.py --no-enrich  
+
+---
+
+## CLI auxiliar (HAB)
+
+El archivo hab_cli.py permite lanzar análisis con una interfaz simplificada.
+
+Modo demo:
+python scripts/hab_cli.py --demo --input-genes data/genes_input.txt
+
+Modo personalizado:
+python scripts/hab_cli.py --string-input data/my_string_network.tsv --seed-genes data/genes_input.txt --output-dir results --top-n 15
+
+---
+
+## Entradas y Salidas
+
+Entrada mínima:
+data/genes_input.txt
+TP53
+BRCA1
+EGFR
+
+Salidas:
+csv/ – mapeos, red y enriquecimientos  
+rwr/ – puntuaciones y top genes  
+figures/ – gráficos GO BP y red  
+graphs/ – edgelist ponderada  
+pipeline.log, run_metadata.json, README_results.md  
+
