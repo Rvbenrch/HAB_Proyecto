@@ -1,5 +1,5 @@
 <details>
-<summary>Enunciado del Projecto<\summary>
+<summary>Enunciado del Projecto</summary>
 
 # Proyecto de Análisis Funcional y Propagación en Redes
 
@@ -59,8 +59,9 @@ Este repositorio implementa un flujo reproducible para análisis funcional (Enri
 ├── README.md                    # (este documento)
 └── requirements.txt             # dependencias
  ``` </pre>
+</details>
 
- # Proyecto de Análisis Funcional y Propagación en Redes (HAB)
+# Proyecto de Análisis Funcional y Propagación en Redes (HAB)
 
 Pipeline reproducible para analizar listas de genes mediante propagación en redes (Random Walk with Restart, RWR) sobre STRING y posterior enriquecimiento funcional con Enrichr (GO BP y KEGG). Incluye opciones bonus (DIAMOnD y GUILD/NetScore) y genera tablas y figuras listas para informe.
 
