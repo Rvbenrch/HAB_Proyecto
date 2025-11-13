@@ -1536,3 +1536,110 @@ def run_analysis(args):
     except Exception as e:
         print(f"Unexpected error: {e}")
         return 1
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="HAB Project CLI - Network Propagation and Functional Analysis",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Run demo with default files
+  python hab_cli.py --demo --input-genes data/genes_input.txt
+  
+  # Run with custom inputs
+  python hab_cli.py --string-input <path> --seed-genes <path> --output-dir <path> --top-n 15
+  
+  # Show help
+  python hab_cli.py --help
+        """
+    )
+    
+    # Demo mode
+    parser.add_argument(
+        '--demo',
+        action='store_true',
+        help='Run in demo mode using default data files'
+    )
+    
+    # Custom arguments
+    parser.add_argument(
+        '--string-input',
+        '--string_input',
+        type=str,
+        help='Path to STRING network file (protein links)'
+    )
+    parser.add_argument(
+        '--seed-genes',
+        '--seed_genes',
+        type=str,
+        help='Path to seed genes file (HUGO symbols)'
+    )
+    parser.add_argument(
+        '--input-genes',
+        '--input_genes',
+        type=str,
+        help='Alias for --seed-genes'
+    )
+    parser.add_argument(
+        '--output-dir',
+        '--output_dir',
+        type=str,
+        default=RESULTS_DIR,
+        help=f'Output directory for results (default: {RESULTS_DIR})'
+    )
+    parser.add_argument(
+        '--top-n',
+        '--top_n',
+        type=int,
+        default=10,
+        help='Number of top nodes for functional analysis (default: 10)'
+    )
+    
+    args = parser.parse_args()
+    
+    # Handle demo mode
+    if args.demo:
+        print("Running in DEMO mode...")
+        demo_args = get_demo_args()
+        if demo_args is None:
+            return 1
+        
+        # Override with command-line input-genes if provided
+        if args.input_genes:
+            demo_args['seed_genes'] = args.input_genes
+        if args.seed_genes:
+            demo_args['seed_genes'] = args.seed_genes
+        if args.string_input:
+            demo_args['string_input'] = args.string_input
+        if args.top_n != 10:
+            demo_args['top_n'] = args.top_n
+        
+        print(f"Using STRING network: {demo_args['string_input']}")
+        print(f"Using seed genes: {demo_args['seed_genes']}")
+        print(f"Output directory: {demo_args['output_dir']}")
+        print(f"Top N genes: {demo_args['top_n']}")
+        print()
+        
+        return run_analysis(demo_args)
+    
+    # Handle custom mode
+    # Resolve aliases
+    seed_genes = args.seed_genes or args.input_genes
+    string_input = args.string_input
+    
+    if not string_input or not seed_genes:
+        parser.print_help()
+        print("\nError: --string-input and --seed-genes (or --input-genes) are required unless using --demo")
+        return 1
+    
+    custom_args = {
+        'string_input': string_input,
+        'seed_genes': seed_genes,
+        'output_dir': args.output_dir,
+        'top_n': args.top_n
+    }
+    
+    return run_analysis(custom_args)
+
+if _name_ == '_main_':
+    sys.exit(main())
