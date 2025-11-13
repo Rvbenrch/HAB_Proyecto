@@ -13,7 +13,7 @@ tablas, gráficos y un resumen de parámetros listo para incluir en la memoria.
 
 ## Estructura del repositorio
 
-text
+```text
 ├── data/                        # Entradas (lista de genes, etc.)
 │   └── genes_input.txt          # Lista de genes semilla (símbolos HUGO/HGNC)
 ├── results/                     # Salidas generadas al ejecutar
@@ -27,7 +27,7 @@ text
 ├── docs/                        # Documentación adicional
 ├── README.md                    # Este documento
 └── requirements.txt             # Dependencias del proyecto
-
+```
 
 ---
 
@@ -76,30 +76,35 @@ El proyecto implementa un **pipeline automatizado** que:
 
 Dependencias principales:
 
-text
+```text
 requests==2.31.0
 pandas==2.2.2
 numpy==1.26.4
 networkx==3.2.1
 matplotlib==3.8.4
 scipy==1.11.4
+```
 
+# Instalación rápida:
 
-Instalación rápida:
-
-bash
-# Crear entorno virtual
+## Crear entorno virtual
+```bash
 python -m venv venv
-
-# Activarlo:
-# Linux/macOS:
+```
+## Activarlo:
+### Linux/macOS:
+```bash
 source venv/bin/activate
-# Windows (PowerShell):
-# .\venv\Scripts\activate
+```
+### Windows (PowerShell):
+```bash
+ .\venv\Scripts\activate
+````
 
-# Instalar dependencias
+## Instalar dependencias
+```bash
 pip install -r requirements.txt
-
+```
 
 > Nota: se requiere conexión a Internet (STRING + Enrichr).
 
@@ -109,18 +114,18 @@ pip install -r requirements.txt
 
 ### Linux / macOS
 
-bash
+```bash
 python3 scripts/funcnet_pipeline.py \
   --genes-file data/genes_input.txt \
   --outdir results \
   --top-k 50 \
   --with-diamond --with-guild \
   --strict-symbols
-
+```
 
 ### Windows
 
-bash
+```bash
 python scripts\funcnet_pipeline.py ^
   --genes-file data\genes_input.txt ^
   --outdir results ^
@@ -128,16 +133,16 @@ python scripts\funcnet_pipeline.py ^
   --with-diamond --with-guild ^
   --strict-symbols
 ---
-
+```
 ## Uso detallado (`funcnet_pipeline.py`)
 
 Ejemplo general:
 
-bash
+```bash
 python scripts/funcnet_pipeline.py [opciones]
+```
 
-
-Parámetros principales:
+## Parámetros principales:
 
 * `--genes-file PATH` – Archivo con genes de entrada.
 * `--outdir PATH` – Carpeta de salida.
@@ -149,46 +154,48 @@ Parámetros principales:
 * `--no-enrich` – Omite análisis funcional.
 * `--strict-symbols` – Solo mapeos exactos símbolo→preferredName.
 
-Visualización:
+### Visualización:
 
 * `--plot-top INT`
 * `--plot-width FLOAT`
 * `--plot-font INT`
 
-Ejemplos útiles:
+### Ejemplos útiles:
 
-bash
-# Ejecución básica
+#### Ejecución básica
+```bash
 python scripts/funcnet_pipeline.py \
   --genes-file data/genes_input.txt \
   --outdir results
-
-# Parámetros más estrictos
+```
+## Parámetros más estrictos
+```bash
 python scripts/funcnet_pipeline.py --string-score 900 --neighbors 100
+```
 ---
 
 ## CLI auxiliar: `hab_cli.py`
 
 ### Modo demo
 
-bash
+```bash
 python scripts/hab_cli.py --demo
+```
 
+##### Con override de genes:
 
-Con override de genes:
-
-bash
+```bash
 python scripts/hab_cli.py --demo --input-genes data/mis_genes.txt
-
+````
 
 ### Modo personalizado
 
-bash
+```bash
 python scripts/hab_cli.py \
   --seed-genes data/genes_input.txt \
   --output-dir results \
   --top-n 15
-
+```
 
 ---
 
@@ -198,11 +205,11 @@ python scripts/hab_cli.py \
 
 `data/genes_input.txt`:
 
-text
+```text
 TP53
 BRCA1
 EGFR
-
+```
 
 ### Salidas (en `results/`)
 
@@ -224,7 +231,7 @@ EGFR
 
 ## Resumen de uso rápido
 
-bash
+```bash
 # 1) Activar entorno
 source venv/bin/activate
 
@@ -239,4 +246,5 @@ python scripts/funcnet_pipeline.py \
   --neighbors 50 \
   --alpha 0.5 \
   --top-k 200
+``` 
 ---
