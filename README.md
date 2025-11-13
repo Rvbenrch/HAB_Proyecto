@@ -201,3 +201,43 @@ figures/ – gráficos GO BP y red
 graphs/ – edgelist ponderada  
 pipeline.log, run_metadata.json, README_results.md  
 
+---
+
+## Reproducibilidad y trazabilidad
+
+* Parámetros guardados en run_metadata.json.  
+* Dependencias fijadas en requirements.txt.  
+* STRING/Enrichr son dinámicos; guardar CSV descargados.  
+* Mantener semillas y filtros originales.  
+
+---
+
+## Justificación de técnicas
+
+* STRING: red PPI curada y amplia; adecuada para proximidad funcional.  
+* RWR: robusto, capta relaciones indirectas.  
+* GO BP + KEGG: combinación estándar para interpretar funciones biológicas.  
+* DIAMOnD / GUILD: complementarios a RWR.  
+
+---
+
+## Criterios de evaluación (rúbrica)
+
+1. Funcionalidad del script (25): pipeline completo y ejecutable.  
+2. Elección y justificación (15): metodología documentada.  
+3. Automatización y flujo (15): CLI completa y resultados organizados.  
+4. Documentación y reproducibilidad (15): README, logs, outputs.  
+5. Calidad de código (10): modularidad, logging y control de errores.  
+6. Análisis y visualización (10): tablas y figuras.  
+Bonus (+10): integración DIAMOnD/GUILD.  
+
+---
+
+## Resumen de ejecución típica
+
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+
+python scripts/funcnet_pipeline.py --genes-file data/genes_input.txt --outdir results --string-score 700 --neighbors 50 --alpha 0.5 --top-k 200
+
+python scripts/funcnet_pipeline.py --genes-file data/genes_input.txt --outdir results --with-diamond --with-guild --combo-top 50
