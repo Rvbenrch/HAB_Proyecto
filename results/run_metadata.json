@@ -1,0 +1,18 @@
+{
+  "genes_file": "data/genes_input.txt",
+  "outdir": "results",
+  "species": 9606,
+  "string_score": 700,
+  "neighbors": 50,
+  "alpha": 0.5,
+  "top_k": 50,
+  "no_enrich": false,
+  "strict_symbols": false,
+  "plot_top": 15,
+  "plot_width": 16.0,
+  "plot_font": 9,
+  "with_diamond": true,
+  "with_guild": true,
+  "combo_top": 50,
+  "timestamp": "2025-11-11 20:21:54"
+}

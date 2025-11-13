@@ -1,0 +1,24 @@
+2025-11-11 20:21:54,108 [INFO] Logger inicializado. Resultados en: results
+2025-11-11 20:21:54,108 [INFO] Genes de entrada (10): AKT1, BRCA1, CDK2, EGFR, MAPK1, MTOR, MYC, PTEN, TP53, VEGFA
+2025-11-11 20:21:54,109 [INFO] Mapeando a IDs de STRING...
+2025-11-11 20:21:54,460 [INFO] Mapeados 10/10 genes a IDs de STRING.
+2025-11-11 20:21:54,467 [WARNING] Se detectaron mapeos no idénticos símbolo→preferredName. Revisa results/csv/mapping_string_ids.csv
+2025-11-11 20:21:54,469 [INFO] Guardado mapeo filtrado en results/csv/mapping_string_ids.csv
+2025-11-11 20:21:54,470 [INFO] Semillas mapeadas en STRING (10): AKT1, BRCA1, CDK2, COL18A1, EGFR, MAPK1, MTOR, MYC, PTEN, TP53
+2025-11-11 20:21:54,470 [INFO] Descargando red de STRING con score>=700 y 50 vecinos...
+2025-11-11 20:21:55,136 [INFO] Red: 576 aristas entre 59 genes. Guardada en results/csv/string_network_edges.csv
+2025-11-11 20:21:55,176 [INFO] Edgelist (ponderada) guardada en results/graphs/network_weighted.edgelist
+2025-11-11 20:21:55,176 [INFO] Grafo con 59 nodos y 576 aristas.
+2025-11-11 20:21:55,193 [INFO] RWR convergió en 14 iteraciones.
+2025-11-11 20:21:55,196 [INFO] Puntuaciones de propagación guardadas en results/rwr/propagation_scores.csv
+2025-11-11 20:21:55,197 [INFO] Top 50 genes guardados en results/rwr/top_genes_50.csv
+2025-11-11 20:21:56,745 [INFO] Guardado enriquecimiento GO_Biological_Process_2021 en results/csv/top50_enrichr_GO_BP.csv
+2025-11-11 20:21:57,424 [INFO] Guardado enriquecimiento KEGG_2019_Human en results/csv/top50_enrichr_KEGG.csv
+2025-11-11 20:21:59,590 [INFO] Gráficos GO guardados en results/figures/go_bp_barplot.png y results/figures/go_bp_barplot.svg
+2025-11-11 20:22:00,301 [INFO] Gráfico de red guardado en results/figures/network_scores.png
+2025-11-11 20:22:00,468 [INFO] DIAMOnD guardado en results/csv/diamond_results.csv
+2025-11-11 20:22:00,473 [INFO] GUILD guardado en results/csv/guild_results.csv
+2025-11-11 20:22:02,007 [INFO] Guardado enriquecimiento GO_Biological_Process_2021 en results/csv/combo_top58_enrichr_GO_BP.csv
+2025-11-11 20:22:02,555 [INFO] Guardado enriquecimiento KEGG_2019_Human en results/csv/combo_top58_enrichr_KEGG.csv
+2025-11-11 20:22:04,689 [INFO] Gráficos GO guardados en results/figures/go_bp_barplot_combo.png y results/figures/go_bp_barplot_combo.svg
+2025-11-11 20:22:04,690 [INFO] Pipeline completado. Revisa results

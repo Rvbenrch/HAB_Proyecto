@@ -7,3 +7,9 @@ requests
 matplotlib
 seaborn
 
+requests
+pandas
+numpy
+networkx
+matplotlib
+scipy

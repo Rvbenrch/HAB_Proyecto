@@ -1,3 +1,6 @@
+<details>
+<summary>Enunciado del Projecto<summary>
+
 # Proyecto de Análisis Funcional y Propagación en Redes
 
 Este repositorio contiene la plantilla base para el proyecto de análisis funcional.
@@ -37,3 +40,24 @@ Desarrollar un script en Python que realice análisis funcional con propagación
 
 ## Evaluación individual
 Se tendrá en cuenta la participación de cada miembro del grupo a través del historial de commits en GitHub.
+<\details>
+
+# Proyecto de Análisis Funcional y Propagación en Redes (FuncNet)
+
+Este repositorio implementa un flujo reproducible para análisis funcional (Enrichr) con propagación en redes (Random Walk with Restart, RWR) sobre genes de entrada. Opcionalmente integra DIAMOnD y GUILD/NetScore para bonus.
+
+<pre> ```python 
+├── data/                        # Entradas (lista de genes, etc.)
+├── results/                     # Salidas (se generan al ejecutar)
+│   ├── csv/                     # mapeos, red STRING, enriquecimientos…
+│   ├── figures/                 # gráficos (PNG, SVG)
+│   ├── graphs/                  # red exportada (edgelist)
+│   └── rwr/                     # scores de propagación y top genes
+├── scripts/
+│   ├── funcnet_pipeline.py      # pipeline principal (RWR + Enrichr)
+│   └── hab_cli.py               # CLI (lanzador práctico del pipeline)
+├── README.md                    # (este documento)
+└── requirements.txt             # dependencias
+ ``` </pre>
+
+ 
