@@ -1,243 +1,242 @@
-<details>
-<summary>Enunciado del Projecto</summary>
+# Proyecto de Análisis Funcional y Propagación en Redes (HAB / FuncNet)
 
-# Proyecto de Análisis Funcional y Propagación en Redes
+En este repositorio hemos montado un **pipeline reproducible** para analizar listas de genes mediante:
 
-Este repositorio contiene la plantilla base para el proyecto de análisis funcional.
+- **Propagación en redes** (Random Walk with Restart, RWR) sobre **STRING**
+- **Análisis funcional** con **Enrichr** (GO Biological Process y KEGG)
+- Opcionalmente, **DIAMOnD** y **GUILD/NetScore** como métodos adicionales de priorización
 
-## Objetivo
-Desarrollar un script en Python que realice análisis funcional con propagación en redes a partir de una lista de genes diferencialmente expresados.
+El objetivo es que, dado un fichero con genes de interés, puedas ejecutar el script y obtener
+tablas, gráficos y un resumen de parámetros listo para incluir en la memoria.
+
+---
 
 ## Estructura del repositorio
 
-```
-├── data/                # Archivos de entrada (lista de genes, redes, etc.)
-├── results/             # Resultados generados por el script
-├── scripts/             # Código fuente del proyecto
-├── docs/                # Documentación adicional (opcional)
-├── README.md            # Este archivo
-└── requirements.txt     # Dependencias del proyecto
-```
-
-## Instrucciones
-1. Haz un fork de este repositorio.
-2. Trabaja en tu fork con tu grupo.
-3. Implementa el análisis funcional con propagación en redes.
-4. Documenta tu código y resultados.
-5. Sube tu proyecto a GitHub y asegúrate de que sea reproducible.
-
-## Rúbrica de Evaluación
-
-| Criterio | Descripción | Puntos |
-|---------|-------------|--------|
-| **1. Funcionalidad del script** | Correcta ejecución del análisis funcional y/o propagación. | 25 |
-| **2. Elección y justificación de técnicas** | Adecuación y justificación de los métodos usados. | 15 |
-| **3. Automatización y flujo de trabajo** | Entrada por CLI, conversión de IDs, descarga de datos, etc. | 15 |
-| **4. Documentación y reproducibilidad** | README claro, dependencias, ejemplos. | 15 |
-| **5. Calidad del código** | Estilo, modularidad, comentarios. | 10 |
-| **6. Análisis y visualización de resultados** | Salidas interpretables, gráficos, tablas. | 10 |
-| **Bonus** | Originalidad, integración de datos, visualizaciones interactivas. | +10 |
-
-## Evaluación individual
-Se tendrá en cuenta la participación de cada miembro del grupo a través del historial de commits en GitHub.
-<\details>
-
-# Proyecto de Análisis Funcional y Propagación en Redes (FuncNet)
-
-Este repositorio implementa un flujo reproducible para análisis funcional (Enrichr) con propagación en redes (Random Walk with Restart, RWR) sobre genes de entrada. Opcionalmente integra DIAMOnD y GUILD/NetScore para bonus.
-
-<pre> ```python 
+text
 ├── data/                        # Entradas (lista de genes, etc.)
-├── results/                     # Salidas (se generan al ejecutar)
-│   ├── csv/                     # mapeos, red STRING, enriquecimientos…
-│   ├── figures/                 # gráficos (PNG, SVG)
-│   ├── graphs/                  # red exportada (edgelist)
-│   └── rwr/                     # scores de propagación y top genes
+│   └── genes_input.txt          # Lista de genes semilla (símbolos HUGO/HGNC)
+├── results/                     # Salidas generadas al ejecutar
+│   ├── csv/                     # Mapeos, red STRING, enriquecimientos…
+│   ├── figures/                 # Gráficos (PNG, SVG)
+│   ├── graphs/                  # Red (weighted edgelist)
+│   └── rwr/                     # Scores de propagación y top genes
 ├── scripts/
-│   ├── funcnet_pipeline.py      # pipeline principal (RWR + Enrichr)
-│   └── hab_cli.py               # CLI (lanzador práctico del pipeline)
-├── README.md                    # (este documento)
-└── requirements.txt             # dependencias
- ``` </pre>
-</details>
+│   ├── funcnet_pipeline.py      # Pipeline principal (RWR + Enrichr)
+│   └── hab_cli.py               # CLI auxiliar
+├── docs/                        # Documentación adicional
+├── README.md                    # Este documento
+└── requirements.txt             # Dependencias del proyecto
 
-# Proyecto de Análisis Funcional y Propagación en Redes (HAB)
-
-Pipeline reproducible para analizar listas de genes mediante propagación en redes (Random Walk with Restart, RWR) sobre STRING y posterior enriquecimiento funcional con Enrichr (GO BP y KEGG). Incluye opciones bonus (DIAMOnD y GUILD/NetScore) y genera tablas y figuras listas para informe.
 
 ---
 
 ## Objetivos del proyecto
 
-* Desarrollar un script en Python que:
-  1. mapee símbolos HUGO/HGNC a IDs de STRING, 2) descargue la red PPI filtrada, 3) ejecute RWR desde genes semilla, 4) clasifique genes por proximidad funcional, 5) realice enriquecimiento funcional (GO BP, KEGG) y 6) produzca salidas estandarizadas (CSV, PNG, SVG, logs y metadatos).
-* Proveer una CLI clara, reproducible y multiplataforma.
-* (Opcional) Integrar DIAMOnD y/o GUILD (NetScore) para priorización adicional y enriquecimiento combinado.
-* Cumplir los criterios de la rúbrica: funcionalidad, justificación técnica, automatización, documentación, calidad de código y visualización.
+El proyecto implementa un **pipeline automatizado** que:
+
+1. Mapea símbolos HUGO/HGNC → IDs de STRING.
+2. Descarga la red PPI de STRING con filtros (score y vecinos).
+3. Ejecuta **Random Walk with Restart (RWR)** desde genes semilla.
+4. Ordena nodos por score de propagación.
+5. Ejecuta **enriquecimiento funcional** (GO BP y KEGG, vía Enrichr).
+6. Genera figuras y tablas listas para informe (PNG, SVG, CSV).
+7. Documenta todo (logs, metadatos, README de resultados).
+8. Opcionalmente ejecuta **DIAMOnD** y **GUILD/NetScore** con enriquecimiento combinado.
 
 ---
 
-## Qué hace el pipeline
+## Qué hace el pipeline (resumen)
 
-1. Lee una lista de genes (símbolos HUGO/HGNC).
-2. Mapea símbolos → IDs de STRING (API).
-3. Descarga la red de interacciones PPI desde STRING con filtros de score y vecinos.
-4. Propaga la señal desde las semillas con RWR y rankea por puntuación.
-5. Enriquece funcionalmente (GO: Biological Process y KEGG) con Enrichr.
-6. Dibuja:
-   * Barplot de GO BP (PNG + SVG) con etiquetas legibles.
-   * Red coloreada por puntuación de propagación.
-7. Opcional (bonus): ejecuta DIAMOnD y/o GUILD y permite enriquecimiento combinado.
-8. Documenta la ejecución: logs, metadatos y README de resultados.
+1. **Lee** `data/genes_input.txt`.
+2. **Mapea** genes → STRING IDs.
+3. **Descarga** red PPI filtrada.
+4. **Construye** el grafo y corre **RWR**.
+5. **Selecciona** el *top-k* de genes más relevantes.
+6. **Lanza Enrichr** (GO BP y KEGG).
+7. **Genera gráficos**:
 
----
-
-## Metodología (resumen)
-
-* RWR: proceso de difusión con reinicio hacia las semillas; asigna scores globales de relevancia.
-* STRING: red PPI curada que integra evidencia experimental, coexpresión y texto.
-* Enrichr: enriquecimiento en GO BP y KEGG sobre el top de genes por RWR.
-* DIAMOnD/GUILD (opcional): priorización basada en conectividad y propagación iterativa.
+   * Barplot de GO BP
+   * Red coloreada por score
+8. *(Opcional)* Ejecuta DIAMOnD / GUILD.
+9. Guarda logs, metadatos y un `README_results.md`.
 
 ---
 
-## Estructura del repositorio
+## Metodología (breve)
 
-data/ – Entradas (genes_input.txt)  
-scripts/ – Código (funcnet_pipeline.py, hab_cli.py)  
-results/ – Salidas generadas  
-docs/ – Documentación adicional  
-requirements.txt – Dependencias  
+* **STRING**: red PPI con evidencia integrada.
+* **RWR**: difusión con reinicio periódico hacia las semillas.
+* **Enrichr**: enriquecimiento funcional; aquí GO BP + KEGG.
+* **DIAMOnD / GUILD (extra)**: estrategias alternativas de priorización.
 
 ---
 
-## Requisitos
+## Requisitos e instalación
 
-requests==2.31.0  
-pandas==2.2.2  
-numpy==1.26.4  
-networkx==3.2.1  
-matplotlib==3.8.4  
+Dependencias principales:
+
+text
+requests==2.31.0
+pandas==2.2.2
+numpy==1.26.4
+networkx==3.2.1
+matplotlib==3.8.4
 scipy==1.11.4
 
-Nota: se requiere conexión a Internet para STRING y Enrichr.
 
 Instalación rápida:
+
+bash
+# Crear entorno virtual
 python -m venv venv
-source venv/bin/activate        # Linux/macOS
-# .\venv\Scripts\activate   # Windows PowerShell
+
+# Activarlo:
+# Linux/macOS:
+source venv/bin/activate
+# Windows (PowerShell):
+# .\venv\Scripts\activate
+
+# Instalar dependencias
 pip install -r requirements.txt
 
-## Ejecución rápida (cross‑platform)
 
-Windows (PowerShell / CMD):
-python scripts\funcnet_pipeline.py --genes-file data\genes_input.txt --outdir results --top-k 50 --with-diamond --with-guild --strict-symbols
-
-Linux / macOS:
-python3 scripts/funcnet_pipeline.py --genes-file data/genes_input.txt --outdir results --top-k 50 --with-diamond --with-guild --strict-symbols
-
-Si no quieres bonus: elimina --with-diamond --with-guild.
+> Nota: se requiere conexión a Internet (STRING + Enrichr).
 
 ---
 
-## Uso detallado (CLI)
+## Ejecución rápida
 
-Script principal: scripts/funcnet_pipeline.py
+### Linux / macOS
 
-Parámetros clave:
---genes-file PATH (por defecto data/genes_input.txt)  
---outdir PATH (por defecto results)  
---species INT (9606 humano)  
---string-score INT (400/700/900)  
---neighbors INT  
---alpha FLOAT (0.5 por defecto)  
---top-k INT  
---no-enrich  
---strict-symbols  
+bash
+python3 scripts/funcnet_pipeline.py \
+  --genes-file data/genes_input.txt \
+  --outdir results \
+  --top-k 50 \
+  --with-diamond --with-guild \
+  --strict-symbols
 
-Opciones de visualización:
---plot-top INT  
---plot-width FLOAT  
---plot-font INT  
 
-Opciones bonus:
---with-diamond  
---with-guild  
---combo-top INT  
+### Windows
 
-Ejemplos de uso:
-python scripts/funcnet_pipeline.py --genes-file data/genes_input.txt --outdir results  
-python scripts/funcnet_pipeline.py --string-score 900 --neighbors 100  
-python scripts/funcnet_pipeline.py --strict-symbols  
-python scripts/funcnet_pipeline.py --top-k 50 --with-diamond --with-guild --combo-top 50  
-python scripts/funcnet_pipeline.py --no-enrich  
+bash
+python scripts\funcnet_pipeline.py ^
+  --genes-file data\genes_input.txt ^
+  --outdir results ^
+  --top-k 50 ^
+  --with-diamond --with-guild ^
+  --strict-symbols
+---
+
+## Uso detallado (`funcnet_pipeline.py`)
+
+Ejemplo general:
+
+bash
+python scripts/funcnet_pipeline.py [opciones]
+
+
+Parámetros principales:
+
+* `--genes-file PATH` – Archivo con genes de entrada.
+* `--outdir PATH` – Carpeta de salida.
+* `--species INT` – TaxID para STRING (9606 = humano).
+* `--string-score INT` – Score mínimo (400/700/900).
+* `--neighbors INT` – Vecinos a añadir desde STRING.
+* `--alpha FLOAT` – Parámetro RWR.
+* `--top-k INT` – Nº de genes para Enrichr.
+* `--no-enrich` – Omite análisis funcional.
+* `--strict-symbols` – Solo mapeos exactos símbolo→preferredName.
+
+Visualización:
+
+* `--plot-top INT`
+* `--plot-width FLOAT`
+* `--plot-font INT`
+
+Ejemplos útiles:
+
+bash
+# Ejecución básica
+python scripts/funcnet_pipeline.py \
+  --genes-file data/genes_input.txt \
+  --outdir results
+
+# Parámetros más estrictos
+python scripts/funcnet_pipeline.py --string-score 900 --neighbors 100
+---
+
+## CLI auxiliar: `hab_cli.py`
+
+### Modo demo
+
+bash
+python scripts/hab_cli.py --demo
+
+
+Con override de genes:
+
+bash
+python scripts/hab_cli.py --demo --input-genes data/mis_genes.txt
+
+
+### Modo personalizado
+
+bash
+python scripts/hab_cli.py \
+  --seed-genes data/genes_input.txt \
+  --output-dir results \
+  --top-n 15
+
 
 ---
 
-## CLI auxiliar (HAB)
+## Entradas y salidas
 
-El archivo hab_cli.py permite lanzar análisis con una interfaz simplificada.
+### Entrada mínima
 
-Modo demo:
-python scripts/hab_cli.py --demo --input-genes data/genes_input.txt
+`data/genes_input.txt`:
 
-Modo personalizado:
-python scripts/hab_cli.py --string-input data/my_string_network.tsv --seed-genes data/genes_input.txt --output-dir results --top-n 15
-
----
-
-## Entradas y Salidas
-
-Entrada mínima:
-data/genes_input.txt
+text
 TP53
 BRCA1
 EGFR
 
-Salidas:
-csv/ – mapeos, red y enriquecimientos  
-rwr/ – puntuaciones y top genes  
-figures/ – gráficos GO BP y red  
-graphs/ – edgelist ponderada  
-pipeline.log, run_metadata.json, README_results.md  
+
+### Salidas (en `results/`)
+
+* **csv/** – Mapeos, red STRING, enriquecimientos, bonus.
+* **rwr/** – Puntuaciones RWR y top genes.
+* **figures/** – GO BP (PNG/SVG), red.
+* **graphs/** – Weighted edgelist.
+* `pipeline.log`, `run_metadata.json`, `README_results.md`.
 
 ---
 
-## Reproducibilidad y trazabilidad
+## Reproducibilidad
 
-* Parámetros guardados en run_metadata.json.  
-* Dependencias fijadas en requirements.txt.  
-* STRING/Enrichr son dinámicos; guardar CSV descargados.  
-* Mantener semillas y filtros originales.  
-
+* Parámetros guardados en `run_metadata.json`.
+* Logging completo en `pipeline.log`.
+* Dependencias fijadas en `requirements.txt`.
+* Red y mapeos exportados en CSV para trazabilidad.
 ---
 
-## Justificación de técnicas
+## Resumen de uso rápido
 
-* STRING: red PPI curada y amplia; adecuada para proximidad funcional.  
-* RWR: robusto, capta relaciones indirectas.  
-* GO BP + KEGG: combinación estándar para interpretar funciones biológicas.  
-* DIAMOnD / GUILD: complementarios a RWR.  
+bash
+# 1) Activar entorno
+source venv/bin/activate
 
----
-
-## Criterios de evaluación (rúbrica)
-
-1. Funcionalidad del script (25): pipeline completo y ejecutable.  
-2. Elección y justificación (15): metodología documentada.  
-3. Automatización y flujo (15): CLI completa y resultados organizados.  
-4. Documentación y reproducibilidad (15): README, logs, outputs.  
-5. Calidad de código (10): modularidad, logging y control de errores.  
-6. Análisis y visualización (10): tablas y figuras.  
-Bonus (+10): integración DIAMOnD/GUILD.  
-
----
-
-## Resumen de ejecución típica
-
-python -m venv venv && source venv/bin/activate
+# 2) Instalar dependencias
 pip install -r requirements.txt
 
-python scripts/funcnet_pipeline.py --genes-file data/genes_input.txt --outdir results --string-score 700 --neighbors 50 --alpha 0.5 --top-k 200
-
-python scripts/funcnet_pipeline.py --genes-file data/genes_input.txt --outdir results --with-diamond --with-guild --combo-top 50
+# 3) Ejecutar pipeline
+python scripts/funcnet_pipeline.py \
+  --genes-file data/genes_input.txt \
+  --outdir results \
+  --string-score 700 \
+  --neighbors 50 \
+  --alpha 0.5 \
+  --top-k 200
+---
